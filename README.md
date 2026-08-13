@@ -4,31 +4,31 @@
 ---
 
 ## 📌 Overview
-- The problem of missing persons is very prominent globally. This application is a means to solve the problem
-of missing persons specifically within the United States. 
+- The problem of missing persons is very prominent globally. This application is a means to help solve the problem
+of missing persons specifically within the United States.
 
-- The core idea is to use a small dataset of dogs that can be used to track humans based from a dog's strength, 
-primary specialty, group, trainability, energy level and temperament with humans.
+- The core idea is to use a small dataset of dogs that can be used to track humans based on a dog's strength,
+primary specialty, group, trainability, energy level, and temperament with humans.
 
-- The main features include a database, viewable map (geolocation) with animal shelter longitude and latitude,
-front end data view and a search feature for the dashboard to swiftly search for mission needed.  
+- The main features include a database, a viewable map (geolocation) with animal shelter longitude and latitude,
+a front‑end data view, and a search feature for the dashboard to swiftly search for mission needs.
 
-- The intended audience for this application are families and small businesses.  
+- The intended audience for this application is families and small businesses.
 
 ---
 
 ## 🧠 Project Explanation
-- System organization  
-The system comprises three elements. The client side (app.py) is where the layout code is housed. 
-it features the dashboard table data itself. At the bottom of the file is where I placed my callbacks for search 
-functionality via data table. To the right of the datatable, lies the map container. animal_shelter.py contains 
-the mock database lines of code giving the app the capability to connect to a MongoDB database. 
-geolocation.py is the code of the map display data. 
+- **System organization**  
+  The system comprises three elements. The client side (`app.py`) is where the layout code is housed.
+  It features the dashboard table data itself. At the bottom of the file is where the callbacks for search
+  functionality via the data table are placed. To the right of the data table lies the map container.
+  `animal_shelter.py` contains the mock database code, giving the app the capability to connect to a MongoDB database.
+  `geolocation.py` contains the map display logic.
 
-- animal_shelter.py is the key module.   
-- The data is pulled from the CSV file then place within a data frame for front end rendering within app.py.
-- Tech stack used: VSCode, Python3, pip3, pandas, plotly Dash, base64, embedded HTML (dash import),
-MongoDB, CLI and Git. 
+- `animal_shelter.py` is the key module.  
+- The data is pulled from the CSV file and placed within a DataFrame for front‑end rendering in `app.py`.
+- **Tech stack used:** VSCode, Python3, pip3, pandas, Plotly Dash, base64, embedded HTML (Dash imports),
+  MongoDB, CLI, and Git.
 
 ---
 
@@ -36,51 +36,35 @@ MongoDB, CLI and Git.
 Steps to set up the project locally.  
 Include prerequisites (software versions, environment variables, etc.).
 
-1. Download, install, and verify python and pip. 'python --version' | 'python -m pip --version'
-2. Create project folder anywhere of your choice.
-3. If using the command line 'cd' into the project folder and create the virtual environment 'pyhon -m venv venv'
-4. Create app.py file within the folder itself or in the IDE.
+1. Download, install, and verify Python and pip.  
+   `python --version` | `python -m pip --version`
+2. Create a project folder anywhere of your choice.
+3. If using the command line, `cd` into the project folder and create the virtual environment:  
+   `python -m venv venv`
+4. Create the `app.py` file within the folder itself or in your IDE.
 
 ---
 
 ## 🚀 Usage
-
-- Run - 'python app.py' to interact. Click the link and your good to go.
-
----
-
-## 📂 Project Structure
-     📂Dash 
-       📂assets/logo.png
-       🗄️.venv
-       📂data/data.csv
-       📂geolocation/geolocation.py
-       📂modules/animal_shelter.py
-       📂test/test_cases.py
-     app.py
+- Run `python app.py` to interact. Click the link and you're good to go.
 
 ---
 
-## 🧪 Testing
-- app.run_server(debug=True) at the bottom of the main file for testing.
-- Test cases. Filter uses assertion testing, styles uses exception check, and DB uses mock testing. 
----
+## 📁 Project Structure
+<img width="344" height="412" alt="Screenshot 2026-08-13 182830" src="https://github.com/user-attachments/assets/d59c277a-91c7-4911-8484-57b04b443752" />
 
-## 📄 Commands Reference
-- python --version
-- pip --version
-- python -m ensurepip --default-pip
-- python -m venv venv
-- venv\Scripts\activate
-- pip install --upgrade pip
-- pip install pandas
-- pip install numpy
-- pip install plotly
-- pip install dash
-- pip install flask
-- pip install geopy
-- pip install base64
-- python app.py
+
+## Demonstration
+<img width="1904" height="855" alt="brave_screenshot" src="https://github.com/user-attachments/assets/ec7c5b6b-38a9-480e-bedd-acb6980f57ad" />
+<img width="1920" height="804" alt="Search" src="https://github.com/user-attachments/assets/563cd6f4-13c6-45b3-8be2-948f2547a44a" />
+<img width="1920" height="911" alt="Screenshot (7)" src="https://github.com/user-attachments/assets/32544443-ca67-432a-ba1b-14ecb840af9b" />
+
+## Optimal screen size breaks
+- iPad Air
+- Surface Pro 7
+- Asus Zen book Fold
+- Computer Monitor
+- Laptop
 
 ---
 
@@ -97,19 +81,7 @@ Include prerequisites (software versions, environment variables, etc.).
 - https://pypi.org/
 - https://copilot.microsoft.com
 
----
-
 ## 🙌 Acknowledgments
 - Southern New Hampshire University college project (2023) enhanced (2026).
 
-## Demonstration
-<img width="1904" height="855" alt="brave_screenshot" src="https://github.com/user-attachments/assets/ec7c5b6b-38a9-480e-bedd-acb6980f57ad" />
-<img width="1920" height="804" alt="Search" src="https://github.com/user-attachments/assets/563cd6f4-13c6-45b3-8be2-948f2547a44a" />
-<img width="1920" height="911" alt="Screenshot (7)" src="https://github.com/user-attachments/assets/32544443-ca67-432a-ba1b-14ecb840af9b" />
 
-## Optimal screen size breaks
-- iPad Air
-- Surface Pro 7
-- Asus Zen book Fold
-- Computer Monitor
-- Laptop
