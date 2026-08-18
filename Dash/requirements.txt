@@ -1,0 +1,5 @@
+dash==4.4.1
+pandas==2.2.3
+plotly==6.9.0
+pymongo==4.17.0
+geopy==2.5.0

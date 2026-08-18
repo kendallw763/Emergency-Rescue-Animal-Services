@@ -6,7 +6,7 @@ import pandas as pd
 from modules.animal_shelter import animalShelter
 
 # Import the map from external file
-from geolocation import create_map
+from geolocation.geolocation import create_map
 
 # Ensure module path is correct
 module_path = os.path.dirname(os.path.abspath('/users/koimon/desktop/CRUD-MODULE-MAIN/CRUD-Module-main/animal_shelter.py'))
@@ -29,23 +29,29 @@ db._connect()
 
 app = Dash(__name__)
 
-# Load logo
+# Load logo if it exists; avoid crashing in containerized or minimal environments.
 image_filename = 'assets/Logo.png'
-encoded_image = base64.b64encode(open(image_filename, 'rb').read()).decode()
+if os.path.exists(image_filename):
+    with open(image_filename, 'rb') as image_file:
+        encoded_image = base64.b64encode(image_file.read()).decode()
+else:
+    encoded_image = None
 
 # Colors
 COLORS = {
-    "bg": "#f5f7fa",          # soft white/grey background
-    "card": "#ffffff",        # pure white cards for clean contrast
-    "accent": "#B30000",      # your logo red (kept exact)
-    "accent_light": "#FF4D4D",# lighter red highlight
-    "text": "#1a1a1a",        # deep grey/black text for readability
-    "header": "#dfe6f9",      # light blue header (map‑matching)
-    "purple": "#7A5CFA",      # soft purple accent (map‑matching)
-    "blue": "#4DA3FF",        # light blue accent (map‑matching)
-    "grey": "#e0e0e0"         # neutral grey for borders/dividers
+    "bg": "#f5f7fa",
+    "card": "#ffffff",
+    "accent": "#B30000",
+    "accent_light": "#FF4D4D",
+    "text": "#1a1a1a",
+    "header": "#dfe6f9",
+    "purple": "#7A5CFA",
+    "blue": "#4DA3FF",
+    "grey": "#e0e0e0"
 }
 
+# expose COLORS on app so callbacks can use app.COLORS
+app.COLORS = COLORS
 
 # Get map figure from external file
 fig = create_map()
@@ -67,9 +73,9 @@ app.layout = html.Div(style={"backgroundColor": COLORS["bg"], "minHeight": "100v
         children=[
             html.Div([
                 html.H1("Emergency Rescue Animal Services", style={"margin": "0", "fontSize": "28px"}),
-                html.P("Humanitary Missions For Missing Persons", style={"margin": "0", "opacity": "0.8"})
+                html.P("Humanitarian Missions For Missing Persons", style={"margin": "0", "opacity": "0.8"})
             ]),
-            html.Img(src=f"data:image/png;base64,{encoded_image}", style={"height": "60px"})
+            html.Img(src=f"data:image/png;base64,{encoded_image}", style={"height": "60px"}) if encoded_image else html.Div()
         ]
     ),
 
@@ -96,7 +102,7 @@ app.layout = html.Div(style={"backgroundColor": COLORS["bg"], "minHeight": "100v
                         "padding": "10px",
                         "borderRadius": "8px",
                         "border": "1px solid #333",
-                        "backgroundColor": "#ffffff", 
+                        "backgroundColor": "#ffffff",
                         "color": COLORS["text"],
                         "marginTop": "10px"
                     }
@@ -112,7 +118,7 @@ app.layout = html.Div(style={"backgroundColor": COLORS["bg"], "minHeight": "100v
                 "flexWrap": "wrap",
                 "justifyContent": "space-between",
                 "alignItems": "flex-start",
-                "backgroundColor": COLORS["card"], 
+                "backgroundColor": COLORS["card"],
                 "padding": "20px",
                 "borderRadius": "12px",
                 "boxShadow": "0px 2px 8px rgba(0,0,0,0.5)"
@@ -159,22 +165,11 @@ app.layout = html.Div(style={"backgroundColor": COLORS["bg"], "minHeight": "100v
 
                 # RIGHT SIDE — MAP
                 html.Div(
-                    style={
-                        "flex": "1 1 40%",
-                        "minWidth": "350px",
-                        "padding": "10px",
-                        "backgroundColor": COLORS["card"],
-                        "borderRadius": "12px"
-                    },
-                    children=[
-                        html.H3(
-                            "Locations Of Dogs",
-                            style={"color": COLORS["text"], "marginTop": "0px"}
-                        ),
-                        dcc.Graph(
-                            id="map-graph",
-                            figure=fig,
-                            style={"height": "400px"}
+                    style={"flex": "1 1 40%","minWidth": "350px","padding": "10px","backgroundColor": 
+                        COLORS["card"],"borderRadius": "12px"},
+                    
+                    children=[html.H3("Locations Of Dogs",style={"color": COLORS["text"], "marginTop": "0px"}),
+                        dcc.Graph(id="map-graph",figure=fig,style={"height": "400px"},config={"scrollZoom": True}
                         )
                     ]
                 )
@@ -183,19 +178,17 @@ app.layout = html.Div(style={"backgroundColor": COLORS["bg"], "minHeight": "100v
     ])
 ])
 
-# --- SEARCH CALLBACK ---
-@app.callback(
-    Output('datatable-id', 'data'),
-    Input('search-box', 'value')
-)
-def update_table(search_value):
-    """
-    Filter the dataframe based on the search box text.
-    Case-insensitive substring match across all columns.
-    """
+# --------------------------
+# SEARCH + STYLE CALLBACKS
+# --------------------------
 
+@app.callback(
+    Output("datatable-id", "data"),
+    Input("search-box", "value")
+)
+def filter_table(search_value):
     if not search_value or search_value.strip() == "":
-        return df.to_dict('records')
+        return df.to_dict("records")
 
     query = search_value.lower()
 
@@ -204,9 +197,22 @@ def update_table(search_value):
         axis=1
     )]
 
-    return filtered.to_dict('records')
+    return filtered.to_dict("records")
 
+
+@app.callback(
+    Output("datatable-id", "style_data_conditional"),
+    Input("datatable-id", "selected_columns")
+)
+def update_styles(selected_columns):
+    if not selected_columns:
+        return []
+    return [{
+        "if": {"column_id": col},
+        "backgroundColor": app.COLORS["accent_light"],
+        "color": "white"
+    } for col in selected_columns]
 
 # RUN APP
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8050, debug=False)
